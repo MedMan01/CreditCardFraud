@@ -1,0 +1,14 @@
+/* src/app/prediction-dialog/prediction-dialog.component.css */
+.dialog-content {
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    color: white;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  

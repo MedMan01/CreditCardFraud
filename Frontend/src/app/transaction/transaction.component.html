@@ -1,0 +1,91 @@
+<div class="container">
+  <mat-card class="fraud-data-card">
+    <mat-card-header>
+      <mat-card-title>Fraud Data</mat-card-title>
+      <button mat-raised-button color="primary" (click)="openAddDialog()">Ajouter</button>
+      <!-- Filter Dropdown -->
+      <mat-form-field appearance="fill">
+        <mat-label>choisire filter</mat-label>
+        <mat-select (selectionChange)="applyFilter($event.value)">
+          <mat-option *ngFor="let status of fraudStatuses" [value]="status.value">
+            {{status.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-table matSort [dataSource]="dataSource" class="mat-elevation-z1">
+  
+          <!-- Column definitions -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+            <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="nameOrig">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name Orig </th>
+            <td mat-cell *matCellDef="let element"> {{element.nameOrig}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="oldbalanceOrg">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Old Balance Orig </th>
+            <td mat-cell *matCellDef="let element"> {{element.oldbalanceOrg}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="newbalanceOrig">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> New Balance Orig </th>
+            <td mat-cell *matCellDef="let element"> {{element.newbalanceOrig}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="nameDest">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name Dest </th>
+            <td mat-cell *matCellDef="let element"> {{element.nameDest}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="oldbalanceDest">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Old Balance Dest </th>
+            <td mat-cell *matCellDef="let element"> {{element.oldbalanceDest}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="newbalanceDest">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> New Balance Dest </th>
+            <td mat-cell *matCellDef="let element"> {{element.newbalanceDest}} </td>
+          </ng-container>
+  
+          <!-- Modification pour isFraud -->
+          <ng-container matColumnDef="isFraud">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="getFraudStatusClass(element.isFraud)">
+              {{ getFraudStatusText(element.isFraud) }}
+            </td>
+          </ng-container>
+  
+           <!-- Button column -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-raised-button color="primary" (click)="viewFraudDetails(element)">Details</button>
+            </td>
+          </ng-container>
+  
+          <!-- Header row -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  
+          <!-- Data rows -->
+          <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons></mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>

@@ -1,0 +1,41 @@
+/* Centrage de la carte et ajustement des marges */
+.container {
+    display: flex;
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    height: 100vh; /* Occupe toute la hauteur de la fenêtre */
+  }
+  
+  /* Styles pour le formulaire de connexion */
+  .login-form {
+    width: 100%;
+    max-width: 400px; /* Taille maximale de la carte */
+    margin: auto; /* Centre horizontalement */
+    flex: auto; /* Permet à l'élément de grandir ou de rétrécir en fonction de l'espace disponible */
+    padding: 20px; /* Ajoute un espace intérieur autour de la carte */
+  }
+  
+  /* Espacement du titre par rapport aux champs de formulaire */
+  .mat-card-header .mat-card-title {
+    margin-bottom: 40px; /* Ajoute plus d'espace sous le titre pour éloigner le texte */
+    text-align: center; /* Centre le texte du titre */
+  }
+  
+  /* S'assure que les champs de formulaire prennent toute la largeur disponible */
+  mat-form-field {
+    display: block; /* Chaque champ de formulaire s'affiche comme un bloc, prenant toute la largeur disponible */
+    width: 100%; /* Assure que le champ prend toute la largeur de son conteneur */
+    margin-bottom: 20px; /* Augmente l'espace entre les champs de formulaire pour une meilleure lisibilité */
+  }
+  
+  /* Ombre portée pour la carte */
+  .login-form {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère pour un effet de relief */
+  }
+  
+  /* Style pour les boutons */
+  mat-card-actions button {
+    padding: 10px 20px; /* Espacement intérieur du bouton */
+    font-size: 16px; /* Taille de la police du bouton */
+  }
+  

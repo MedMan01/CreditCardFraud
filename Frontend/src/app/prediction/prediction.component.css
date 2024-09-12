@@ -1,0 +1,10 @@
+.predict-fraud-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  

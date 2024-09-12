@@ -1,0 +1,71 @@
+<h1 mat-dialog-title>Ajouter des Données Frauduleuses</h1>
+<div mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" #fraudForm="ngForm">
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="data.type" name="type" required>
+        <mat-option *ngFor="let option of typeOptions" [value]="option.value">
+          {{ option.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Amount</mat-label>
+      <input matInput [(ngModel)]="data.amount" name="amount" type="number" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Name Orig</mat-label>
+      <input matInput [(ngModel)]="data.nameOrig" name="nameOrig">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Old Balance Org</mat-label>
+      <input matInput [(ngModel)]="data.oldbalanceOrg" name="oldbalanceOrg" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>New Balance Org</mat-label>
+      <input matInput [(ngModel)]="data.newbalanceOrg" name="newbalanceOrg" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Name Dest</mat-label>
+      <input matInput [(ngModel)]="data.nameDest" name="nameDest">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Old Balance Dest</mat-label>
+      <input matInput [(ngModel)]="data.oldbalanceDest" name="oldbalanceDest" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>New Balance Dest</mat-label>
+      <input matInput [(ngModel)]="data.newbalanceDest" name="newbalanceDest" type="number">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Is Fraud</mat-label>
+      <mat-select [(ngModel)]="data.isFraud" name="isFraud">
+        <mat-option [value]="0">Normal</mat-option>
+        <mat-option [value]="1">Suspect</mat-option>
+        <mat-option [value]="2">Fraud</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Is Flagged Fraud</mat-label>
+      <mat-select [(ngModel)]="data.isFlaggedFraud" name="isFlaggedFraud">
+        <mat-option [value]="0">No</mat-option>
+        <mat-option [value]="1">Yes</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Annuler</button>
+      <button mat-button type="submit">Ajouter</button>
+    </mat-dialog-actions>
+  </form>
+</div>

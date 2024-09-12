@@ -1,0 +1,12 @@
+.normal-row {
+    background-color: #09cb40; /* Vert plus intense */
+  }
+  
+  .suspect-row {
+    background-color: #f8ba03; /* Jaune plus intense */
+  }
+  
+  .fraud-row {
+    background-color: #f43246; /* Rouge plus intense */
+  }
+  

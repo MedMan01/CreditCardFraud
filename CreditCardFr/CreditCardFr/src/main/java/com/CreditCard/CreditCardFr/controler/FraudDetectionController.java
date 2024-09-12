@@ -1,72 +1,85 @@
-package com.CreditCard.CreditCardFr.controler;
+    package com.CreditCard.CreditCardFr.controler;
 
-import com.CreditCard.CreditCardFr.model.FraudData;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+    import com.CreditCard.CreditCardFr.dto.FraudDataCrudeDTO;
+    import com.CreditCard.CreditCardFr.dto.FraudDataDTO;
+    import com.CreditCard.CreditCardFr.model.FraudData;
+    import com.CreditCard.CreditCardFr.repository.FraudDataRepository;
+    import com.CreditCard.CreditCardFr.service.FraudDataService;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.PageRequest;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
+    import java.util.List;
 
-@RestController
-@RequestMapping("/api")
-public class FraudDetectionController {
+    @RestController
+    @RequestMapping("/api")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public class FraudDetectionController {
 
-    @PostMapping("/predict")
-    public ResponseEntity<String> predictFraud(@RequestBody FraudData data) {
-        try {
-            // Convert the received data to JSON
-            ObjectMapper mapper = new ObjectMapper();
-            String inputJson = mapper.writeValueAsString(data);
+        @Autowired
+        private FraudDataService fraudDataService;
+        @Autowired
+        FraudDataRepository fraudDataRepository;
 
-            // Write the JSON data to a temporary file
-            File tempFile = File.createTempFile("inputData", ".json");
-            try (PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
-                writer.write(inputJson);
-            }
-
-            // Create a process to run the Python script with the path to the file as an argument
-            ProcessBuilder processBuilder = new ProcessBuilder(
-                    "C:/Users/mooha/Documents/EMSI/CreditFraud/env/Scripts/python.exe",
-                    "C:/Users/mooha/Documents/EMSI/CreditFraud/predict_fraud2.py",
-                    tempFile.getAbsolutePath()
-            );
-
-            Process process = processBuilder.start();
-
-            // Read the output from the Python script (prediction)
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String result;
-            StringBuilder output = new StringBuilder();
-            while ((result = reader.readLine()) != null) {
-                output.append(result);
-            }
-
-            // Read errors from the Python script
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            StringBuilder errorOutput = new StringBuilder();
-            String errorLine;
-            while ((errorLine = errorReader.readLine()) != null) {
-                errorOutput.append(errorLine).append("\n");
-            }
-
-            // Check for errors
-            if (errorOutput.length() > 0) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error executing Python script: " + errorOutput.toString());
-            }
-
-            // Delete the temporary file
-            tempFile.delete();
-
-            // Return the prediction as a response
-            return ResponseEntity.ok(output.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during prediction");
+        // CREATE
+        @PostMapping("/create")
+        public ResponseEntity<FraudData> createFraudData(@RequestBody FraudDataCrudeDTO dto) {
+            return fraudDataService.createFraudData(dto);
         }
+
+        // READ all
+        @GetMapping("/all")
+        public ResponseEntity<List<FraudData>> getAllFraudData() {
+            return fraudDataService.getAllFraudData();
+        }
+
+        @GetMapping("/fraud-data")
+        public Page<FraudData> getLimitedFraudData(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1000") int size) {
+            return fraudDataService.getLimitedFraudData(page,size);
+        }
+        // READ one by ID
+        @GetMapping("/{id}")
+        public ResponseEntity<FraudData> getFraudDataById(@PathVariable Long id) {
+            return fraudDataService.getFraudDataById(id);
+        }
+
+        // UPDATE
+        @PutMapping("/update/{id}")
+        public ResponseEntity<FraudData> updateFraudData(@PathVariable Long id, @RequestBody FraudDataCrudeDTO dto) {
+            return fraudDataService.updateFraudData(id, dto);
+        }
+
+        // DELETE
+        @DeleteMapping("/delete/{id}")
+        public ResponseEntity<Void> deleteFraudData(@PathVariable Long id) {
+            return fraudDataService.deleteFraudData(id);
+        }
+
+        // Predict Fraud (Optional - if you need an endpoint to test the prediction separately)
+        @PostMapping("/predict")
+        public ResponseEntity<String> predictFraud(@RequestBody FraudDataDTO dto) {
+
+            System.out.println(dto.getType());
+            return ResponseEntity.ok(fraudDataService.predictFraud(dto));
+        }
+
+        // Filtre par isFraud (0, 1, 2)
+        @GetMapping("/filter/isFraud")
+        public ResponseEntity<List<FraudData>> filterByIsFraud(@RequestParam int isFraud) {
+            return fraudDataService.getFraudDataByIsFraud(isFraud);
+        }
+        @PostMapping("/import-csv")
+        public String importCsv(@RequestParam String filePath) {
+            fraudDataService.saveCsvDataToDb(filePath);
+            return "Les données CSV ont été importées avec succès.";
+        }
+
+        @GetMapping("/count")
+        public int nombreRow(){
+
+            return (int) fraudDataRepository.count();
+        }
+
     }
-}

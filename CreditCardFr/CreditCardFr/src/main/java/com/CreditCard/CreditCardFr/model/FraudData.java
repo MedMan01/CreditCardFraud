@@ -1,6 +1,7 @@
 package com.CreditCard.CreditCardFr.model;
 
 
+import com.CreditCard.CreditCardFr.enumeration.Type;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +21,15 @@ public class FraudData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    private int type;
-    private double amount;
-    private double oldbalanceOrg;
-
-    private double oldbalanceDest;
-    private double newbalanceDest;
-
+    private Type type;
+    private Double amount;
+    private String nameOrig;
+    private Double oldbalanceOrg;
+    private Double newbalanceOrig;
+    private String nameDest;
+    private Double oldbalanceDest;
+    private Double newbalanceDest;
+    private Integer isFraud;
 
     // Getters et setters
 }
