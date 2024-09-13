@@ -50,8 +50,8 @@ export class FraudDataService {
     return this.http.get<FraudData[]>(`${this.baseUrl}/filter/isFraud`, { params });
   }
 
-   // Predict Fraud
-   predictFraud(dto: FraudDataDTO): Observable<string> {
+  // Predict Fraud
+  predictFraud(dto: FraudDataDTO): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/predict`, dto);
   }
 }

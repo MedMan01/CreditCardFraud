@@ -66,8 +66,9 @@ export class TransactionComponent implements OnInit {
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddFraudDataDialogComponent, {
-      width: '250px'
-    });
+      width: '80%',  // Ajuste cette valeur pour la largeur désirée
+      height: '80%'  // Ajuste cette valeur pour la hauteur désirée
+       });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
