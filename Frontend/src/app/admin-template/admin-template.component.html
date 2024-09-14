@@ -8,8 +8,8 @@
     <button mat-button routerLink="/admin/home">Home</button>
   
   
-    <button mat-button >
-
+    <button mat-button *ngIf="authService.isAuthenticated">
+      {{authService.username}}
     </button>
     <button mat-raised-button color="accent" (click)="logout()" >
       Logout

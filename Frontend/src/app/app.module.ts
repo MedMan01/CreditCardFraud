@@ -37,6 +37,11 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AddFraudDataDialogComponent } from './add-fraud-data-dialog/add-fraud-data-dialog.component';
 import { PredictionDialogComponent } from './prediction-dialog/prediction-dialog.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
+import { StatsComponent } from './stats/stats.component';
+
+
 
 @NgModule({
   declarations: [
@@ -49,6 +54,8 @@ import { PredictionDialogComponent } from './prediction-dialog/prediction-dialog
     LoginComponent,
     AddFraudDataDialogComponent,
     PredictionDialogComponent,
+    DashboardComponent,
+    StatsComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,7 +82,8 @@ import { PredictionDialogComponent } from './prediction-dialog/prediction-dialog
     MatDialogModule,
     FormsModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgChartsModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

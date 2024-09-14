@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { FraudData, FraudDataCrudeDTO, FraudDataDTO } from '../model/fraud-data.model';
+import { FraudData, FraudDataCrudeDTO, FraudDataDTO, Type } from '../model/fraud-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,4 +54,14 @@ export class FraudDataService {
   predictFraud(dto: FraudDataDTO): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/predict`, dto);
   }
+
+  //Dashboard
+  getStats(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/stats`);
+  }
+
+  getStatsByType(type: Type): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/type-stats?type=${type}`);
+  }
+  
 }

@@ -284,4 +284,27 @@ public class FraudDataService {
         return resultPage;
     }
 
+    public long countByIsFraud(int isFraud) {
+        if (isFraud < 0 || isFraud > 2) {
+            throw new IllegalArgumentException("Invalid isFraud value: " + isFraud);
+        }
+        return fraudDataRepository.countByIsFraud(isFraud);
+    }
+
+    public long countByIsFraudByType(Type type, int isFraud) {
+        return fraudDataRepository.countByIsFraudAndType(type, isFraud);
+    }
+
+    public long getNormalCountByType(Type type) {
+        return countByIsFraudByType(type, 0);
+    }
+
+    public long getSuspectCountByType(Type type) {
+        return countByIsFraudByType(type, 1);
+    }
+
+    public long getFraudCountByType(Type type) {
+        return countByIsFraudByType(type, 2);
+    }
+
 }

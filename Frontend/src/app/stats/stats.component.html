@@ -1,0 +1,11 @@
+<div>
+  <!-- Dropdown for selecting payment type -->
+  <select (change)="onTypeChange($event)" [(ngModel)]="selectedType">
+    <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+  </select>
+</div>
+
+<!-- Chart canvas -->
+<div>
+  <canvas id="chartCanvas"></canvas>
+</div>

@@ -1,0 +1,78 @@
+<div class="container">
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Dashboard</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <div class="stats-container">
+        <!-- Existing Cards -->
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Total Transactions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>{{ totalTransactions }}</h2>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Normal</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>{{ normalCount }}</h2>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Suspect</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>{{ suspectCount }}</h2>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card">
+          <mat-card-header>
+            <mat-card-title>Fraud</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h2>{{ fraudCount }}</h2>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Charts Section -->
+  <mat-card class="chart-card">
+    <mat-card-header>
+      <mat-card-title>Charts</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="charts-container">
+        <!-- Pie Chart -->
+        <div class="chart">
+          <canvas id="pieChart"></canvas>
+        </div>
+
+        <!-- Bar Chart Container -->
+        <div class="bar-chart-container">
+          <!-- Dropdown for selecting payment type -->
+          <div class="dropdown-container">
+            <select (change)="onTypeChange($event)" [(ngModel)]="selectedType">
+              <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+
+          <!-- Bar Chart Canvas -->
+          <div class="chart">
+            <canvas id="chartCanvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

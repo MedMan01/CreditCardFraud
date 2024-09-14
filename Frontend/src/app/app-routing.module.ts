@@ -7,16 +7,19 @@ import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { PredictionComponent } from './prediction/prediction.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { StatsComponent } from './stats/stats.component';
 
 const routes: Routes = [
   {path:"", component:LoginComponent},
   {path:"login", component:LoginComponent},
+  {path:"stats", component:StatsComponent},
   {path:"admin", component:AdminTemplateComponent,
     canActivate:[AuthGuard],
     children:[
       {path:"home", component:HomeComponent},
       {path:"profile", component:ProfileComponent},
-      {path:"dashboard", component:ProfileComponent},
+      {path:"dashboard", component:DashboardComponent},
       {path:"transaction", component:TransactionComponent},
       {path:"prediction", component:PredictionComponent},
     ]}

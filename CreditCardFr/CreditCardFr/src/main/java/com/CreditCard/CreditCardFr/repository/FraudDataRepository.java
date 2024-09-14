@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import com.CreditCard.CreditCardFr.enumeration.Type;
+
 
 import java.util.List;
 
@@ -18,5 +20,10 @@ public interface FraudDataRepository extends JpaRepository<FraudData, Long> {
 
     Page<FraudData> findAll(Pageable pageable);
 
+    @Query("SELECT COUNT(f) FROM FraudData f WHERE f.isFraud = :isFraud")
+    long countByIsFraud(@Param("isFraud") int isFraud);
+
+    @Query("SELECT COUNT(f) FROM FraudData f WHERE f.isFraud = :isFraud AND f.type = :type")
+    long countByIsFraudAndType(@Param("type") Type type, @Param("isFraud") int isFraud);
 
 }

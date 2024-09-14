@@ -2,14 +2,12 @@ package com.CreditCard.CreditCardFr.model;
 
 
 import com.CreditCard.CreditCardFr.enumeration.Type;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 
 @Entity
@@ -21,6 +19,9 @@ public class FraudData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "type")
     private Type type;
     private Double amount;
     private String nameOrig;

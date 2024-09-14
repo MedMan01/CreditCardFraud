@@ -2,6 +2,7 @@
 
     import com.CreditCard.CreditCardFr.dto.FraudDataCrudeDTO;
     import com.CreditCard.CreditCardFr.dto.FraudDataDTO;
+    import com.CreditCard.CreditCardFr.enumeration.Type;
     import com.CreditCard.CreditCardFr.model.FraudData;
     import com.CreditCard.CreditCardFr.repository.FraudDataRepository;
     import com.CreditCard.CreditCardFr.service.FraudDataService;
@@ -11,7 +12,9 @@
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
 
+    import java.util.HashMap;
     import java.util.List;
+    import java.util.Map;
 
     @RestController
     @RequestMapping("/api")
@@ -80,6 +83,43 @@
         public int nombreRow(){
 
             return (int) fraudDataRepository.count();
+        }
+
+
+        @GetMapping("/countByIsFraud")
+        public ResponseEntity<Long> countByIsFraud(@RequestParam int isFraud) {
+            try {
+                long count = fraudDataService.countByIsFraud(isFraud);
+                return ResponseEntity.ok(count);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(null);
+            }
+        }
+
+        // Controller Spring Boot
+        @GetMapping("/stats")
+        public ResponseEntity<Map<String, Long>> getStats() {
+            long totalTransactions = fraudDataRepository.count();
+            long normalCount = fraudDataService.countByIsFraud(0);
+            long suspectCount = fraudDataService.countByIsFraud(1);
+            long fraudCount = fraudDataService.countByIsFraud(2);
+
+            Map<String, Long> stats = new HashMap<>();
+            stats.put("totalTransactions", totalTransactions);
+            stats.put("normalCount", normalCount);
+            stats.put("suspectCount", suspectCount);
+            stats.put("fraudCount", fraudCount);
+
+            return ResponseEntity.ok(stats);
+        }
+
+        @GetMapping("/type-stats")
+        public Map<String, Long> getStatsByType(@RequestParam Type type) {
+            Map<String, Long> stats = new HashMap<>();
+            stats.put("normalCount", fraudDataService.getNormalCountByType(type));
+            stats.put("suspectCount", fraudDataService.getSuspectCountByType(type));
+            stats.put("fraudCount", fraudDataService.getFraudCountByType(type));
+            return stats;
         }
 
     }
