@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit{
     let auth:boolean= this.authService.login(username,password)
 
     if (auth==true){
-      this.router.navigateByUrl("/admin/home")
+      this.router.navigateByUrl("/admin/dashboard")
     }
 
   }

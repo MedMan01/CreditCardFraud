@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FraudDataService } from '../services/fraud-data.service';
-import { FraudDataCrudeDTO, Type } from '../model/fraud-data.model';
+import { FraudDataCrudeDTO, FraudData, Type } from '../model/fraud-data.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-fraud-data-dialog',
@@ -10,7 +11,7 @@ import { FraudDataCrudeDTO, Type } from '../model/fraud-data.model';
 })
 export class AddFraudDataDialogComponent {
   data: FraudDataCrudeDTO = {
-    type: Type.PAYMENT, // Enum representing the type of transaction
+    type: Type.PAYMENT,
     amount: 0,
     nameOrig: '',
     oldbalanceOrg: 0,
@@ -21,57 +22,62 @@ export class AddFraudDataDialogComponent {
   };
 
   typeOptions = [
-    { value: Type.PAYMENT, viewValue: 'Payment' },
-    { value: Type.TRANSFER, viewValue: 'Transfer' },
-    { value: Type.CASH_OUT, viewValue: 'Cash Out' },
-    { value: Type.DEBIT, viewValue: 'Debit' },
-    { value: Type.CASH_IN, viewValue: 'Cash In' }
+    { value: 'PAYMENT', viewValue: 'Payment' },
+    { value: 'TRANSFER', viewValue: 'Transfer' },
+    { value: 'CASH_OUT', viewValue: 'Cash Out' }, 
+    { value: 'CASH_IN', viewValue: 'Cash In' },
+    { value: 'DEBIT', viewValue: 'Debit' }
   ];
 
   constructor(
     public dialogRef: MatDialogRef<AddFraudDataDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public inputData: any,
-    private fraudDataService: FraudDataService
+    private fraudDataService: FraudDataService,
+    private snackBar: MatSnackBar
   ) {}
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   onSubmit(): void {
-    this.fraudDataService.createFraudData(this.data).subscribe(response => {
-      this.fraudDataService.predictFraud(this.data).subscribe(prediction => {
+    this.fraudDataService.createFraudData(this.data).subscribe({
+      next: (response: FraudData) => {
+        // Close the dialog
+        this.dialogRef.close(true);
+        
+        // Determine the prediction result
         let message = '';
-        let color = '';
-
-        switch (prediction.trim()) {
-          case '0':
-            message = 'La transaction est normale';
-            color = 'green';
-            break;
-          case '1':
-            message = 'La transaction est suspecte';
-            color = 'yellow';
-            break;
-          case '2':
-            message = 'La transaction est frauduleuse';
-            color = 'red';
-            break;
-          default:
-            message = 'Prédiction inconnue';
-            color = 'gray';
-            break;
+        if (response.isFraud === 0) {
+          message = 'Transaction is Normal';
+        } else if (response.isFraud === 1) {
+          message = 'Transaction is Suspect';
+        } else if (response.isFraud === 2) {
+          message = 'Transaction is Fraud';
         }
 
-        this.openDialog(message, color);
-      });
-    }, error => {
-      console.error('Error adding data', error);
-      alert('Erreur lors de l\'ajout des données : ' + error.message);
+        // Show result in a snackbar
+        this.snackBar.open(message, 'Close', {
+          duration: 5000,
+          panelClass: this.getSnackBarClass(response.isFraud)
+        });
+      },
+      error: (err) => {
+        console.error('Error creating transaction:', err);
+        this.snackBar.open('Failed to create fraud data', 'Close', {
+          duration: 3000,
+        });
+      }
     });
   }
 
-  openDialog(message: string, color: string): void {
-    alert(`%c${message}`);
+  onCancel(): void {
+    this.dialogRef.close(false);
+  }
+
+  // Add a method to get the class for the snackbar based on the fraud result
+  getSnackBarClass(isFraud: number): string[] {
+    if (isFraud === 0) {
+      return ['normal-transaction'];
+    } else if (isFraud === 1) {
+      return ['suspect-transaction'];
+    } else {
+      return ['fraud-transaction'];
+    }
   }
 }

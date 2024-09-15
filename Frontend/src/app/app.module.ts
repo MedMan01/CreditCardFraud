@@ -32,7 +32,6 @@ import { AdminTemplateComponent } from './admin-template/admin-template.componen
 import { TransactionComponent } from './transaction/transaction.component';
 import { PredictionComponent } from './prediction/prediction.component';
 import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AddFraudDataDialogComponent } from './add-fraud-data-dialog/add-fraud-data-dialog.component';
@@ -40,6 +39,7 @@ import { PredictionDialogComponent } from './prediction-dialog/prediction-dialog
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgChartsModule } from 'ng2-charts';
 import { StatsComponent } from './stats/stats.component';
+import { EditFraudDataDialogComponent } from './edit-fraud-data-dialog/edit-fraud-data-dialog.component';
 
 
 
@@ -50,12 +50,12 @@ import { StatsComponent } from './stats/stats.component';
     TransactionComponent,
     PredictionComponent,
     HomeComponent,
-    ProfileComponent,
     LoginComponent,
     AddFraudDataDialogComponent,
     PredictionDialogComponent,
     DashboardComponent,
     StatsComponent,
+    EditFraudDataDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +83,8 @@ import { StatsComponent } from './stats/stats.component';
     FormsModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
+    MatDialogModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

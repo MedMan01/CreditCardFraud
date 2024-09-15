@@ -13,7 +13,7 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Amount</mat-label>
-      <input matInput [(ngModel)]="data.amount" name="amount" type="number" required>
+      <input matInput [(ngModel)]="data.amount" name="amount" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -46,7 +46,9 @@
       <input matInput [(ngModel)]="data.newbalanceDest" name="newbalanceDest" type="number">
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">Ajouter</button>
-    <button mat-button (click)="onNoClick()">Annuler</button>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit">Save</button>
+      <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+    </div>
   </form>
 </div>

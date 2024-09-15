@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { FraudDataService } from '../services/fraud-data.service';
 import { AddFraudDataDialogComponent } from '../add-fraud-data-dialog/add-fraud-data-dialog.component';
 import { FraudData } from '../model/fraud-data.model';
+import { EditFraudDataDialogComponent } from '../edit-fraud-data-dialog/edit-fraud-data-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-transaction',
@@ -12,7 +14,7 @@ import { FraudData } from '../model/fraud-data.model';
   styleUrls: ['./transaction.component.css']
 })
 export class TransactionComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'type', 'amount', 'nameOrig', 'oldbalanceOrg', 'newbalanceOrig', 'nameDest', 'oldbalanceDest', 'newbalanceDest', 'isFraud', 'actions'];
+  displayedColumns: string[] = ['id', 'type', 'amount', 'nameOrig', 'oldbalanceOrg', 'newbalanceOrig', 'nameDest', 'oldbalanceDest', 'newbalanceDest', 'isFraud', 'action'];
   dataSource = new MatTableDataSource<FraudData>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -23,7 +25,8 @@ export class TransactionComponent implements OnInit {
     { value: 2, viewValue: 'Fraud' }
   ];
 
-  constructor(private fraudDataService: FraudDataService, private dialog: MatDialog) { }
+  constructor(private fraudDataService: FraudDataService, private dialog: MatDialog,     private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     this.getFraudData();
@@ -66,9 +69,9 @@ export class TransactionComponent implements OnInit {
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddFraudDataDialogComponent, {
-      width: '80%',  // Ajuste cette valeur pour la largeur désirée
-      height: '80%'  // Ajuste cette valeur pour la hauteur désirée
-       });
+      width: '80%',
+      height: '80%'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
@@ -87,4 +90,34 @@ export class TransactionComponent implements OnInit {
       return '';
     }
   }
+  deleteRecord(element: any) {
+    this.fraudDataService.deleteFraudData(element.id).subscribe(response => {
+      const index = this.dataSource.data.indexOf(element);
+      if (index > -1) {
+        this.dataSource.data.splice(index, 1);
+        this.dataSource._updateChangeSubscription();
+      }
+      this.snackBar.open('Transaction est supprimer', 'Close', {
+        duration: 3000,
+      });
+    }, error => {
+      console.error('Error deleting record:', error);
+    });
+  }
+
+  openEditDialog(element: FraudData): void {
+    const dialogRef = this.dialog.open(EditFraudDataDialogComponent, {
+      width: '80%',
+      height: '80%',
+      data: element
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getFraudData(); // Refresh the data after closing the dialog
+      }
+    });
+  }
+  
+  
 }

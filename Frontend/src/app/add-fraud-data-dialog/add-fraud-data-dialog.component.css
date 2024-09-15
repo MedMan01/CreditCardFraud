@@ -1,0 +1,17 @@
+/* styles.css */
+
+.normal-transaction {
+    background-color: green;
+    color: white;
+  }
+  
+  .suspect-transaction {
+    background-color: yellow;
+    color: black;
+  }
+  
+  .fraud-transaction {
+    background-color: red;
+    color: white;
+  }
+  

@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { PredictionComponent } from './prediction/prediction.component';
@@ -18,7 +17,6 @@ const routes: Routes = [
     canActivate:[AuthGuard],
     children:[
       {path:"home", component:HomeComponent},
-      {path:"profile", component:ProfileComponent},
       {path:"dashboard", component:DashboardComponent},
       {path:"transaction", component:TransactionComponent},
       {path:"prediction", component:PredictionComponent},

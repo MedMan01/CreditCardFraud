@@ -4,9 +4,7 @@
       <mat-icon >menu</mat-icon>
     </button>
   
-    <span style="flex:auto"></span>
-    <button mat-button routerLink="/admin/home">Home</button>
-  
+    <span style="flex:auto"></span>  
   
     <button mat-button *ngIf="authService.isAuthenticated">
       {{authService.username}}

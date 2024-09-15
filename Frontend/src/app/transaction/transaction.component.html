@@ -77,11 +77,16 @@
           </td>
         </ng-container>
 
-        <!-- Button column -->
-        <ng-container matColumnDef="actions">
+        <!-- Delete and Edit Button Column -->
+        <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-raised-button color="primary" (click)="viewFraudDetails(element)">Details</button>
+            <button mat-icon-button (click)="openEditDialog(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteRecord(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </td>
         </ng-container>
 

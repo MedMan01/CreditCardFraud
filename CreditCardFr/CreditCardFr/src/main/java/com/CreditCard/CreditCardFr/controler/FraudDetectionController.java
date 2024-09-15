@@ -122,4 +122,11 @@
             return stats;
         }
 
+        // UPDATE isFraud
+        @PatchMapping("/update-isFraud/{id}")
+        public ResponseEntity<FraudData> updateIsFraud(@PathVariable Long id, @RequestParam int isFraud) {
+            return fraudDataService.updateIsFraud(id, isFraud);
+        }
+
+
     }

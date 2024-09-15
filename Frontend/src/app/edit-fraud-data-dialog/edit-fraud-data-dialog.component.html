@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Edit Fraud Data</h1>
+<div mat-dialog-content>
+  <form [formGroup]="editForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let status of fraudStatuses" [value]="status.value">
+          {{ status.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Name Orig</mat-label>
+      <input matInput formControlName="nameOrig">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Old Balance Orig</mat-label>
+      <input matInput formControlName="oldbalanceOrg" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>New Balance Orig</mat-label>
+      <input matInput formControlName="newbalanceOrig" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Name Dest</mat-label>
+      <input matInput formControlName="nameDest">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Old Balance Dest</mat-label>
+      <input matInput formControlName="oldbalanceDest" type="number">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>New Balance Dest</mat-label>
+      <input matInput formControlName="newbalanceDest" type="number">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSave()">Save</button>
+</div>

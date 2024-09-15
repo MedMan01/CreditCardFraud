@@ -12,6 +12,7 @@ import com.opencsv.exceptions.CsvException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -61,15 +62,16 @@ public class FraudDataService {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    // READ all with a limit of 641880 rows
+    // READ all with a limit of 3213 rows, sorted by a specific column (e.g., 'id')
     public ResponseEntity<List<FraudData>> getAllFraudData() {
-        List<FraudData> allData = fraudDataRepository.findAll();
-
         int limit = 3213;
 
-        // Si la taille des données filtrées est supérieure à la limite, prendre les dernières lignes
+        // Retrieve all data sorted by 'id' in descending order (change 'id' to your sorting field)
+        List<FraudData> allData = fraudDataRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        // If data size is greater than the limit, take only the last 'limit' rows
         if (allData.size() > limit) {
-            allData = allData.subList(allData.size() - limit, allData.size());
+            allData = allData.subList(0, limit);  // Take the first 3213 items since it's already sorted in descending order
         }
 
         return ResponseEntity.ok(allData);
@@ -306,5 +308,24 @@ public class FraudDataService {
     public long getFraudCountByType(Type type) {
         return countByIsFraudByType(type, 2);
     }
+
+    // UPDATE isFraud
+    public ResponseEntity<FraudData> updateIsFraud(Long id, int isFraud) {
+        // Validate the isFraud value
+        if (isFraud < 0 || isFraud > 2) {
+            return ResponseEntity.badRequest().build(); // Bad request if isFraud is not 0, 1, or 2
+        }
+
+        Optional<FraudData> existingFraudData = fraudDataRepository.findById(id);
+        if (existingFraudData.isPresent()) {
+            FraudData fraudData = existingFraudData.get();
+            fraudData.setIsFraud(isFraud);
+            FraudData updatedData = fraudDataRepository.save(fraudData);
+            return ResponseEntity.ok(updatedData);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 
 }
