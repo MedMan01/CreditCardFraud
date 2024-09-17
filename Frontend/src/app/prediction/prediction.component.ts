@@ -24,12 +24,12 @@ export class PredictionComponent {
   predictFraud() {
     this.fraudDataService.predictFraud(this.dto).subscribe(result => {
       console.log('Raw prediction result:', result); // Log raw result to debug
-  
+
       // Ensure the result is treated as a string for comparison
       const resultStr = result.toString().trim();
       let message: string;
       let color: string;
-  
+
       switch (resultStr) {
         case '0':
           message = 'Transaction is normal';
@@ -48,13 +48,12 @@ export class PredictionComponent {
           color = 'gray';
           break;
       }
-  
+
       this.openDialog(message, color);
     }, error => {
       console.error('Error predicting fraud:', error);
     });
   }
-  
 
   openDialog(message: string, color: string) {
     this.dialog.open(PredictionDialogComponent, {

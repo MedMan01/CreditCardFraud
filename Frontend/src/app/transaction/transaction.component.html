@@ -1,10 +1,10 @@
 <div class="container">
   <!-- Main Fraud Data Card -->
-  <mat-card class="fraud-data-card">
+  <mat-card class="fraud-data-card animated-card">
     <mat-card-header>
-      <div class="header-actions" style="display: flex; align-items: center; justify-content: space-between;">
+      <div class="header-actions">
         <!-- Filter Dropdown aligned to the left with a smaller width -->
-        <mat-form-field appearance="fill" class="filter-form" style="width: 150px; margin-right: 40px;">
+        <mat-form-field appearance="fill" class="filter-form">
           <mat-label>Filtre</mat-label>
           <mat-select (selectionChange)="applyFilter($event.value)">
             <mat-option *ngFor="let status of fraudStatuses" [value]="status.value">
@@ -14,14 +14,14 @@
         </mat-form-field>
 
         <!-- "Ajouter" button aligned next to the filter with extra space -->
-        <button mat-raised-button color="primary" (click)="openAddDialog()" style="margin-left: auto;">Ajouter</button>
+        <button mat-raised-button color="primary" (click)="openAddDialog()" class="add-button">Ajouter</button>
       </div>
     </mat-card-header>
 
     <mat-divider></mat-divider>
 
     <mat-card-content>
-      <mat-table matSort [dataSource]="dataSource" class="mat-elevation-z1">
+      <mat-table matSort [dataSource]="dataSource" class="mat-elevation-z1 animated-table">
         <!-- Column definitions -->
 
         <ng-container matColumnDef="id">
@@ -94,7 +94,9 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
         <!-- Data rows -->
-        <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" 
+            [ngClass]="getFraudStatusClass(element.isFraud)">
+        </tr>
       </mat-table>
       <mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons></mat-paginator>
     </mat-card-content>

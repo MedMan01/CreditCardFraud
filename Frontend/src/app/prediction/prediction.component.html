@@ -1,38 +1,37 @@
 <div class="predict-fraud-container">
-    <h2>Predict Fraud</h2>
-    <form (ngSubmit)="predictFraud()">
-      <mat-form-field appearance="fill">
-        <mat-label>Type</mat-label>
-        <mat-select [(ngModel)]="dto.type" name="type">
-          <mat-option [value]="Type.PAYMENT">PAYMENT</mat-option>
-          <mat-option [value]="Type.TRANSFER">TRANSFER</mat-option>
-          <mat-option [value]="Type.CASH_OUT">CASH_OUT</mat-option>
-          <mat-option [value]="Type.DEBIT">DEBIT</mat-option>
-          <mat-option [value]="Type.CASH_IN">CASH_IN</mat-option>
-        </mat-select>
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Amount</mat-label>
-        <input matInput [(ngModel)]="dto.amount" name="amount" type="number">
-      </mat-form-field>
-      
-      <mat-form-field appearance="fill">
-        <mat-label>Old Balance Org</mat-label>
-        <input matInput [(ngModel)]="dto.oldbalanceOrg" name="oldbalanceOrg" type="number">
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>Old Balance Dest</mat-label>
-        <input matInput [(ngModel)]="dto.oldbalanceDest" name="oldbalanceDest" type="number">
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill">
-        <mat-label>New Balance Dest</mat-label>
-        <input matInput [(ngModel)]="dto.newbalanceDest" name="newbalanceDest" type="number">
-      </mat-form-field>
-  
-      <button mat-raised-button color="primary" type="submit">Predict</button>
-    </form>
-  </div>
-  
+  <h2>Predict Fraud</h2>
+  <form (ngSubmit)="predictFraud()">
+    <mat-form-field appearance="fill">
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="dto.type" name="type">
+        <mat-option [value]="Type.PAYMENT">PAYMENT</mat-option>
+        <mat-option [value]="Type.TRANSFER">TRANSFER</mat-option>
+        <mat-option [value]="Type.CASH_OUT">CASH_OUT</mat-option>
+        <mat-option [value]="Type.DEBIT">DEBIT</mat-option>
+        <mat-option [value]="Type.CASH_IN">CASH_IN</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Amount</mat-label>
+      <input matInput [(ngModel)]="dto.amount" name="amount" type="number" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Old Balance Org</mat-label>
+      <input matInput [(ngModel)]="dto.oldbalanceOrg" name="oldbalanceOrg" type="number" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Old Balance Dest</mat-label>
+      <input matInput [(ngModel)]="dto.oldbalanceDest" name="oldbalanceDest" type="number" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>New Balance Dest</mat-label>
+      <input matInput [(ngModel)]="dto.newbalanceDest" name="newbalanceDest" type="number" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Predict</button>
+  </form>
+</div>

@@ -4,6 +4,7 @@ import com.CreditCard.CreditCardFr.dto.FraudDataCrudeDTO;
 import com.CreditCard.CreditCardFr.dto.FraudDataDTO;
 import com.CreditCard.CreditCardFr.enumeration.Type;
 import com.CreditCard.CreditCardFr.model.FraudData;
+import com.CreditCard.CreditCardFr.repository.EmailService;
 import com.CreditCard.CreditCardFr.repository.FraudDataRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.SpringBootEmail.Entity.EmailDetails;
 
 import java.io.*;
 import java.util.*;
@@ -26,6 +28,8 @@ public class FraudDataService {
 
     @Autowired
     private FraudDataRepository fraudDataRepository;
+    @Autowired
+    private EmailService emailService;
 
     // CREATE
     public ResponseEntity<FraudData> createFraudData(FraudDataCrudeDTO dto) {
@@ -51,7 +55,7 @@ public class FraudDataService {
         // Predict fraud
         String predictionResult = predictFraud(fraudDataDTO);
 
-        // Convert prediction result to an integer (0 or 1 for isFraud)
+        // Convert prediction result to an integer (0, 1, or 2 for isFraud)
         int isFraud = Integer.parseInt(predictionResult.trim());
 
         // Set isFraud in fraudData
@@ -59,8 +63,48 @@ public class FraudDataService {
 
         // Save fraud data in the repository
         FraudData savedData = fraudDataRepository.save(fraudData);
+
+        // Check if the transaction is fraud (2)
+        if (isFraud == 1) {
+            try {
+                // Create email details
+                EmailDetails emailDetails = new EmailDetails();
+                emailDetails.setRecipient("med.man0607@gmail.com");
+                emailDetails.setSubject("🔔 Alerte de Fraude : Transaction Suspectée");
+
+                // Formatted email message with additional styling
+                StringBuilder msgBody = new StringBuilder();
+                msgBody.append("<h2 style='color: #FF0000;'>Alerte de Transaction Frauduleuse</h2>")
+                        .append("<p>Bonjour,</p>")
+                        .append("<p style='font-size: 16px;'>La transaction avec l'identifiant <strong>")
+                        .append(savedData.getId())
+                        .append("</strong> a été <span style='color: #FFA500;'>signalée comme suspectée de fraude</span>.</p>")
+                        .append("<p>Nous vous invitons à vérifier cette transaction pour prendre les mesures appropriées.</p>")
+                        .append("<p style='font-size: 14px;'>Détails de la transaction :</p>")
+                        .append("<ul>")
+                        .append("<li><strong>Montant :</strong> ").append(fraudData.getAmount()).append(" €</li>")
+                        .append("<li><strong>Type de transaction :</strong> ").append(fraudData.getType()).append("</li>")
+                        .append("<li><strong>Nom de l'expéditeur :</strong> ").append(fraudData.getNameOrig()).append("</li>")
+                        .append("<li><strong>Nom du destinataire :</strong> ").append(fraudData.getNameDest()).append("</li>")
+                        .append("</ul>")
+                        .append("<p style='font-size: 14px; color: #808080;'>Veuillez réagir rapidement pour éviter tout impact financier.</p>")
+                        .append("<p style='font-size: 14px;'>Cordialement,</p>")
+                        .append("<p><strong>L'équipe de Sécurité Financière</strong></p>");
+
+                emailDetails.setMsgBody(msgBody.toString());
+
+                // Send email in HTML format
+                emailService.sendHtmlMail(emailDetails);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
+
+
 
     // READ all with a limit of 3213 rows, sorted by a specific column (e.g., 'id')
     public ResponseEntity<List<FraudData>> getAllFraudData() {

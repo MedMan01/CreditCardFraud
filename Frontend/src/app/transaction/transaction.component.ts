@@ -25,99 +25,75 @@ export class TransactionComponent implements OnInit {
     { value: 2, viewValue: 'Fraud' }
   ];
 
-  constructor(private fraudDataService: FraudDataService, private dialog: MatDialog,     private snackBar: MatSnackBar
-  ) { }
+  constructor(private fraudDataService: FraudDataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.getFraudData();
   }
 
   getFraudData() {
-    this.fraudDataService.getAllFraudData().subscribe((data: FraudData[]) => {
+    this.fraudDataService.getAllFraudData().subscribe(data => {
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
     });
   }
 
-  applyFilter(isFraud: number | null) {
-    if (isFraud === null) {
-      this.getFraudData(); // Reset the filter
+  applyFilter(status: number) {
+    if (status === 0) {
+      this.dataSource.data = this.dataSource.data.filter(data => data.isFraud === 0);
+    } else if (status === 1) {
+      this.dataSource.data = this.dataSource.data.filter(data => data.isFraud === 1);
+    } else if (status === 2) {
+      this.dataSource.data = this.dataSource.data.filter(data => data.isFraud === 2);
     } else {
-      this.fraudDataService.filterByIsFraud(isFraud).subscribe((data: FraudData[]) => {
-        this.dataSource.data = data;
-        this.dataSource.paginator = this.paginator;
-      });
+      this.getFraudData();
     }
   }
 
-  viewFraudDetails(element: FraudData) {
-    // Logic to view detailed information about the fraud data
-    console.log('Viewing fraud details:', element);
-  }
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddFraudDataDialogComponent);
 
-  getFraudStatusText(isFraud: number): string {
-    if (isFraud === 0) {
-      return 'Normal';
-    } else if (isFraud === 1) {
-      return 'Suspect';
-    } else if (isFraud === 2) {
-      return 'Fraud';
-    } else {
-      return 'Unknown';
-    }
-  }
-
-  openAddDialog(): void {
-    const dialogRef = this.dialog.open(AddFraudDataDialogComponent, {
-      width: '80%',
-      height: '80%'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.getFraudData(); // Refresh the data after closing the dialog
-    });
-  }
-
-  getFraudStatusClass(isFraud: number): string {
-    if (isFraud === 0) {
-      return 'normal-row';
-    } else if (isFraud === 1) {
-      return 'suspect-row';
-    } else if (isFraud === 2) {
-      return 'fraud-row';
-    } else {
-      return '';
-    }
-  }
-  deleteRecord(element: any) {
-    this.fraudDataService.deleteFraudData(element.id).subscribe(response => {
-      const index = this.dataSource.data.indexOf(element);
-      if (index > -1) {
-        this.dataSource.data.splice(index, 1);
-        this.dataSource._updateChangeSubscription();
-      }
-      this.snackBar.open('Transaction est supprimer', 'Close', {
-        duration: 3000,
-      });
-    }, error => {
-      console.error('Error deleting record:', error);
-    });
-  }
-
-  openEditDialog(element: FraudData): void {
-    const dialogRef = this.dialog.open(EditFraudDataDialogComponent, {
-      width: '80%',
-      height: '80%',
-      data: element
-    });
-  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getFraudData(); // Refresh the data after closing the dialog
+        this.getFraudData();
       }
     });
   }
-  
-  
+
+  openEditDialog(element: FraudData) {
+    const dialogRef = this.dialog.open(EditFraudDataDialogComponent, {
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getFraudData();
+      }
+    });
+  }
+
+  deleteRecord(element: FraudData) {
+    this.fraudDataService.deleteFraudData(element.id).subscribe(() => {
+      this.snackBar.open('Transaction supprimée!', 'Fermer', { duration: 2000 });
+      this.getFraudData();
+    });
+  }
+
+  getFraudStatusClass(status: number): string {
+    switch (status) {
+      case 0: return 'normal-row';
+      case 1: return 'suspect-row';
+      case 2: return 'fraud-row';
+      default: return '';
+    }
+  }
+
+  getFraudStatusText(status: number): string {
+    switch (status) {
+      case 0: return 'Normal';
+      case 1: return 'Suspect';
+      case 2: return 'Fraud';
+      default: return '';
+    }
+  }
 }

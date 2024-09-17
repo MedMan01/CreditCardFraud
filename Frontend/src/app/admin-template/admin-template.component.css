@@ -1,0 +1,61 @@
+/* --- Couleurs pour la toolbar (barre d'outils) --- */
+.toolbar {
+    background-color: #263238; /* Gris foncé élégant */
+    color: #f0f4f8; /* Blanc très clair pour meilleure lisibilité */
+  }
+  
+  .username {
+    color: #ffffff; /* Blanc pour un contraste plus élevé */
+  }
+  
+  .logout-btn {
+    background-color: #d32f2f; /* Rouge pour logout */
+    color: #ffffff; /* Blanc éclatant pour meilleure clarté */
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  .logout-btn:hover {
+    background-color: #f44336; /* Rouge plus clair au survol */
+    transform: scale(1.1);
+  }
+  
+  /* --- Drawer & List Buttons --- */
+  .drawer-container {
+    background-color: #37474f; /* Bleu foncé pour le fond */
+  }
+  
+  .animated-drawer {
+    color: #ffffff; /* Texte blanc pour contraste élevé */
+  }
+  
+  .nav-button {
+    color: #eceff1; /* Gris très clair pour meilleur contraste */
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s;
+  }
+  
+  .nav-button:hover {
+    background-color: #546e7a; /* Bleu/gris foncé au survol */
+    color: #ffffff;
+  }
+  
+  /* --- Style de contenu principal --- */
+  .main-content {
+    background-color: #eceff1; /* Arrière-plan gris clair pour contraste */
+    color: #263238; /* Texte gris foncé pour meilleure lisibilité */
+    min-height: 600px;
+  }
+  
+  /* --- Animations du drawer --- */
+  .animated-drawer {
+    transition: transform 0.4s ease-in-out;
+  }
+  
+  .mat-drawer-opened {
+    transform: translateX(0);
+  }
+  
+  .mat-drawer-closed {
+    transform: translateX(-100%);
+  }
+  

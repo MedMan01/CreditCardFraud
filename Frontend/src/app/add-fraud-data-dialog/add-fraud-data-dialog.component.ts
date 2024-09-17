@@ -59,7 +59,7 @@ export class AddFraudDataDialogComponent {
       },
       error: (err) => {
         console.error('Error creating transaction:', err);
-        this.snackBar.open('Failed to create fraud data', 'Close', {
+        this.snackBar.open('Failed to create transaction data', 'Close', {
           duration: 3000,
         });
       }

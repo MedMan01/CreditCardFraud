@@ -36,7 +36,19 @@
   /* Style pour les boutons */
   mat-card-actions button {
     padding: 10px 20px; /* Espacement intérieur du bouton */
-    font-size: 16px; /* Taille de la police du bouton */
+    font-size: 16px; /* Taille 
+    de la police du bouton */
   }
+
+  .image-container {
+    text-align: center; /* Center the image within the container */
+    padding: 10px; /* Add some padding around the image */
+  }
+  
+  .image-container img {
+    max-width: 100%; /* Ensure the image fits within the container */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
   
   

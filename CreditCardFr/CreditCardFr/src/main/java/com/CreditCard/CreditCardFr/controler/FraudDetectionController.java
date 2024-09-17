@@ -4,6 +4,8 @@
     import com.CreditCard.CreditCardFr.dto.FraudDataDTO;
     import com.CreditCard.CreditCardFr.enumeration.Type;
     import com.CreditCard.CreditCardFr.model.FraudData;
+    import  com.SpringBootEmail.Entity.EmailDetails;
+    import com.CreditCard.CreditCardFr.repository.EmailService;
     import com.CreditCard.CreditCardFr.repository.FraudDataRepository;
     import com.CreditCard.CreditCardFr.service.FraudDataService;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@
         private FraudDataService fraudDataService;
         @Autowired
         FraudDataRepository fraudDataRepository;
+
+        @Autowired
+        private EmailService emailService;
+
 
         // CREATE
         @PostMapping("/create")
@@ -126,6 +132,28 @@
         @PatchMapping("/update-isFraud/{id}")
         public ResponseEntity<FraudData> updateIsFraud(@PathVariable Long id, @RequestParam int isFraud) {
             return fraudDataService.updateIsFraud(id, isFraud);
+        }
+
+        // Sending a simple Email
+        @PostMapping("/sendMail")
+        public String
+        sendMail(@RequestBody EmailDetails details)
+        {
+            String status
+                    = emailService.sendSimpleMail(details);
+
+            return status;
+        }
+
+        // Sending email with attachment
+        @PostMapping("/sendMailWithAttachment")
+        public String sendMailWithAttachment(
+                @RequestBody EmailDetails details)
+        {
+            String status
+                    = emailService.sendMailWithAttachment(details);
+
+            return status;
         }
 
 

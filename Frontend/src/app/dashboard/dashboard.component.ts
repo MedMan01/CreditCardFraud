@@ -14,50 +14,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
   suspectCount: number = 0;
   fraudCount: number = 0;
   stats: any = {};
-  chart: any;
   selectedType: Type = Type.PAYMENT; // Default type
   types: Type[] = Object.values(Type);
 
   private pieChart: Chart<'doughnut'> | undefined;
+  private barChart: Chart<'bar'> | undefined;
 
   constructor(private fraudDataService: FraudDataService) { }
 
   ngOnInit(): void {
     this.fraudDataService.getStats().subscribe(
       stats => {
-        console.log('Received stats:', stats); // Vérifiez les données dans la console
+        console.log('Received stats:', stats);
         this.totalTransactions = stats.totalTransactions;
         this.normalCount = stats.normalCount;
         this.suspectCount = stats.suspectCount;
         this.fraudCount = stats.fraudCount;
-        this.stats = stats; // Assignez les données aux stats
-        this.initCharts(); // Initialisez les graphiques après avoir reçu les données
-
+        this.stats = stats;
+        this.initCharts();
         this.loadStats(this.selectedType);
-
       },
       error => {
-        console.error('Error fetching stats:', error); // Vérifiez s'il y a des erreurs
+        console.error('Error fetching stats:', error);
       }
     );
   }
-  // Method to handle type change from dropdown
-  onTypeChange(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.selectedType = selectElement.value as Type;
-    this.loadStats(this.selectedType);
+
+  onTypeChange(type: Type): void {
+    this.selectedType = type;
+    this.loadStats(type);
   }
+
   loadStats(type: Type): void {
     this.fraudDataService.getStatsByType(type).subscribe(data => {
-      this.createChart(type, data);
+      this.createBarChart(type, data);
     });
   }
-  createChart(type: Type, data: any): void {
-    if (this.chart) {
-      this.chart.destroy();
+
+  createBarChart(type: Type, data: any): void {
+    if (this.barChart) {
+      this.barChart.destroy();
     }
 
-    this.chart = new Chart('chartCanvas', {
+    this.barChart = new Chart('chartCanvas', {
       type: 'bar',
       data: {
         labels: [type],
@@ -104,15 +103,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  ngOnDestroy(): void {
-    this.destroyCharts();
-  }
-
   initCharts(): void {
     this.destroyCharts();
 
-    // Pie Chart
     const pieCtx = (document.getElementById('pieChart') as HTMLCanvasElement)?.getContext('2d');
     if (pieCtx) {
       this.pieChart = new Chart(pieCtx, {
@@ -150,5 +143,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   destroyCharts(): void {
     if (this.pieChart) this.pieChart.destroy();
+    if (this.barChart) this.barChart.destroy();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyCharts();
   }
 }

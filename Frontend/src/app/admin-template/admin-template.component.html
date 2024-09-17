@@ -1,59 +1,48 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="toolbar">
+  <button mat-icon-button (click)="myDrawer.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
 
-    <button mat-icon-button (click)="myDrawer.toggle()">
-      <mat-icon >menu</mat-icon>
-    </button>
-  
-    <span style="flex:auto"></span>  
-  
-    <button mat-button *ngIf="authService.isAuthenticated">
-      {{authService.username}}
-    </button>
-    <button mat-raised-button color="accent" (click)="logout()" >
-      Logout
-    </button>
-  
-  </mat-toolbar>
-  <mat-drawer-container>
-    <mat-drawer #myDrawer  opened="true" mode="side" position="start">
-      <mat-list>
-        <mat-list-item >
-          <button mat-button routerLink="/admin/dashboard">
-            <mat-icon>dashboard</mat-icon>
-            Dashboard</button>
-        </mat-list-item>
-       <!-- <mat-list-item>
-  
-          <button mat-button routerLink="/admin/antecedents">
-            <mat-icon>dashboard</mat-icon>
-            Antecedent</button>
-  
-        </mat-list-item>-->
-        <mat-list-item >
-          <button mat-button routerLink="/admin/transaction">
-            <mat-icon>dashboard</mat-icon>
-  
-            Transactions</button>
-        </mat-list-item>
-        <mat-list-item>
-          <button mat-button routerLink="/admin/prediction">
-            <mat-icon>dashboard</mat-icon>
-  
-            Predictions</button>
-        </mat-list-item>
-      <!--  <mat-list-item>
-          <button mat-button routerLink="/admin/payments">
-            <mat-icon>dashboard</mat-icon>
-  
-            Payment</button>
-        </mat-list-item>-->
-        
-      </mat-list>
-    </mat-drawer>
-    <mat-drawer-content>
-      <div style="min-height: 600px">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-drawer-content>
-  </mat-drawer-container>
-  
+  <span style="flex:auto"></span>  
+
+  <button mat-button *ngIf="authService.isAuthenticated" class="username">
+    {{authService.username}}
+  </button>
+
+  <button mat-raised-button class="logout-btn" (click)="logout()">
+    Logout
+  </button>
+</mat-toolbar>
+
+<mat-drawer-container class="drawer-container">
+  <mat-drawer #myDrawer mode="side" class="animated-drawer">
+    <mat-list>
+      <mat-list-item>
+        <button mat-button routerLink="/admin/dashboard" class="nav-button">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+      </mat-list-item>
+
+      <mat-list-item>
+        <button mat-button routerLink="/admin/transaction" class="nav-button">
+          <mat-icon>description</mat-icon>
+          Transactions
+        </button>
+      </mat-list-item>
+
+      <mat-list-item>
+        <button mat-button routerLink="/admin/prediction" class="nav-button">
+          <mat-icon>insights</mat-icon>
+          Predictions
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

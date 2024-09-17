@@ -1,4 +1,3 @@
-// src/app/prediction-dialog/prediction-dialog.component.ts
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
