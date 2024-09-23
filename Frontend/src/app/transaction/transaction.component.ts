@@ -28,7 +28,7 @@ export class TransactionComponent implements OnInit {
   constructor(private fraudDataService: FraudDataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.getFraudData();
+    this.getFraudData(); // Load all data initially
   }
 
   getFraudData() {
@@ -39,14 +39,13 @@ export class TransactionComponent implements OnInit {
   }
 
   applyFilter(status: number) {
-    if (status === 0) {
-      this.dataSource.data = this.dataSource.data.filter(data => data.isFraud === 0);
-    } else if (status === 1) {
-      this.dataSource.data = this.dataSource.data.filter(data => data.isFraud === 1);
-    } else if (status === 2) {
-      this.dataSource.data = this.dataSource.data.filter(data => data.isFraud === 2);
+    if (status === -1) {
+      this.getFraudData(); // Reset to original data
     } else {
-      this.getFraudData();
+      this.fraudDataService.filterByIsFraud(status).subscribe(data => {
+        this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator;
+      });
     }
   }
 
@@ -74,7 +73,7 @@ export class TransactionComponent implements OnInit {
 
   deleteRecord(element: FraudData) {
     this.fraudDataService.deleteFraudData(element.id).subscribe(() => {
-      this.snackBar.open('Transaction supprimée!', 'Fermer', { duration: 2000 });
+      this.snackBar.open('Transaction supprimée!', 'Fermer', { duration: 1000 });
       this.getFraudData();
     });
   }

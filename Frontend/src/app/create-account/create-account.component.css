@@ -1,0 +1,13 @@
+.create-account-form {
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  button {
+    margin-top: 20px;
+  }
+  

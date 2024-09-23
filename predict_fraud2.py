@@ -6,7 +6,7 @@ import pandas as pd
 import xgboost 
 
 # Load the model
-with open('C:/Users/mooha/Documents/EMSI/CreditCardFraud/fraud_detection_model.pkl', 'rb') as file:
+with open('C:/Users/mooha/Documents/Rapport Stage/Projet du Stage Mohammed Manouni/CreditCardFraud/fraud_detection_model.pkl', 'rb') as file:
     model = pickle.load(file)
 
 # Check if a file path was provided

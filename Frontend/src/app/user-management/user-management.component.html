@@ -1,0 +1,41 @@
+<div class="user-management">
+    <h2>User Management</h2>
+  
+      
+    <!-- User List -->
+    <h3>Existing Users</h3>
+    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef> Username </th>
+        <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+      </ng-container>
+  
+      <!-- Roles Column -->
+      <ng-container matColumnDef="roles">
+        <th mat-header-cell *matHeaderCellDef> Roles </th>
+        <td mat-cell *matCellDef="let user"> {{user.roles.join(', ')}} </td>
+      </ng-container>
+  
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-button (click)="deleteUser(user.username)">Delete</button>
+  
+          <mat-form-field>
+            <mat-select placeholder="Modify Roles" multiple [(ngModel)]="selectedRoles" name="modifyRoles">
+              <mat-option value="ADMIN">Admin</mat-option>
+              <mat-option value="Employe">Employe</mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <button mat-button (click)="modifyUser(user.username)">Modify Roles</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="['username', 'roles', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['username', 'roles', 'actions'];"></tr>
+    </table>
+  </div>
+  

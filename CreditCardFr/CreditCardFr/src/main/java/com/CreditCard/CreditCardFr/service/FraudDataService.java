@@ -162,6 +162,42 @@ public class FraudDataService {
             fraudData.setIsFraud(isFraud);
 
             FraudData updatedData = fraudDataRepository.save(fraudData);
+            // Check if the transaction is fraud (2)
+            if (isFraud == 1) {
+                try {
+                    // Create email details
+                    EmailDetails emailDetails = new EmailDetails();
+                    emailDetails.setRecipient("med.man0607@gmail.com");
+                    emailDetails.setSubject("🔔 Alerte de Fraude : Transaction Suspectée");
+
+                    // Formatted email message with additional styling
+                    StringBuilder msgBody = new StringBuilder();
+                    msgBody.append("<h2 style='color: #FF0000;'>Alerte de Transaction Frauduleuse</h2>")
+                            .append("<p>Bonjour,</p>")
+                            .append("<p style='font-size: 16px;'>La transaction Modifier de l'identifiant <strong>")
+                            .append(updatedData.getId())
+                            .append("</strong> a été <span style='color: #FFA500;'>signalée comme suspectée de fraude</span>.</p>")
+                            .append("<p>Nous vous invitons à vérifier cette transaction pour prendre les mesures appropriées.</p>")
+                            .append("<p style='font-size: 14px;'>Détails de la transaction :</p>")
+                            .append("<ul>")
+                            .append("<li><strong>Montant :</strong> ").append(fraudData.getAmount()).append(" DH</li>")
+                            .append("<li><strong>Type de transaction :</strong> ").append(fraudData.getType()).append("</li>")
+                            .append("<li><strong>Nom de l'expéditeur :</strong> ").append(fraudData.getNameOrig()).append("</li>")
+                            .append("<li><strong>Nom du destinataire :</strong> ").append(fraudData.getNameDest()).append("</li>")
+                            .append("</ul>")
+                            .append("<p style='font-size: 14px; color: #808080;'>Veuillez réagir rapidement pour éviter tout impact financier.</p>")
+                            .append("<p style='font-size: 14px;'>Cordialement,</p>")
+                            .append("<p><strong>L'équipe de Sécurité Financière</strong></p>");
+
+                    emailDetails.setMsgBody(msgBody.toString());
+
+                    // Send email in HTML format
+                    emailService.sendHtmlMail(emailDetails);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+                }
+            }
             return ResponseEntity.ok(updatedData);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -204,7 +240,7 @@ public class FraudDataService {
             // Execute Python script
             ProcessBuilder processBuilder = new ProcessBuilder(
                     "C:/Users/mooha/Documents/EMSI/CreditFraud/env/Scripts/python.exe",
-                    "C:/Users/mooha/Documents/EMSI/CreditFraud/predict_fraud2.py",
+                    "C:/Users/mooha/Documents/Rapport Stage/Projet du Stage Mohammed Manouni/CreditCardFraud/predict_fraud2.py",
                     tempFile.getAbsolutePath()
             );
 

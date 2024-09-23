@@ -3,14 +3,28 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span style="flex:auto"></span>  
+  <span style="flex:auto"></span>
 
-  <button mat-button *ngIf="authService.isAuthenticated" class="username">
-    {{authService.username}}
+  <!-- Dropdown pour la gestion des utilisateurs -->
+  <button mat-button [matMenuTriggerFor]="accountMenu" *ngIf="authService.roles.includes('ADMIN')" class="username">
+    <mat-icon>account_circle</mat-icon> Gestion des comptes
+  </button>
+  <button mat-button *ngIf="authService.isAuthenticated">
+        {{authService.username}}
   </button>
 
+  <!-- Menu déroulant avec les options "Créer un compte" et "Gérer les utilisateurs" -->
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item routerLink="/admin/create-account">
+      <mat-icon>person_add</mat-icon> Créer un compte
+    </button>
+    <button mat-menu-item routerLink="/admin/user-management">
+      <mat-icon>group</mat-icon> Gérer les utilisateurs
+    </button>
+  </mat-menu>
+
   <button mat-raised-button class="logout-btn" (click)="logout()">
-    Logout
+    Déconnexion
   </button>
 </mat-toolbar>
 
@@ -18,9 +32,9 @@
   <mat-drawer #myDrawer mode="side" class="animated-drawer">
     <mat-list>
       <mat-list-item>
-        <button mat-button routerLink="/admin/dashboard" class="nav-button">
+        <button mat-button routerLink="/admin/dashboard" class="nav-button" >
           <mat-icon>dashboard</mat-icon>
-          Dashboard
+          Tableau de bord
         </button>
       </mat-list-item>
 
@@ -34,7 +48,7 @@
       <mat-list-item>
         <button mat-button routerLink="/admin/prediction" class="nav-button">
           <mat-icon>insights</mat-icon>
-          Predictions
+          Prédictions
         </button>
       </mat-list-item>
     </mat-list>

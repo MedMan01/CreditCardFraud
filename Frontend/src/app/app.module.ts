@@ -40,6 +40,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgChartsModule } from 'ng2-charts';
 import { StatsComponent } from './stats/stats.component';
 import { EditFraudDataDialogComponent } from './edit-fraud-data-dialog/edit-fraud-data-dialog.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 
 
@@ -56,6 +58,8 @@ import { EditFraudDataDialogComponent } from './edit-fraud-data-dialog/edit-frau
     DashboardComponent,
     StatsComponent,
     EditFraudDataDialogComponent,
+    CreateAccountComponent,
+    UserManagementComponent,
   ],
   imports: [
     BrowserModule,
